@@ -73,7 +73,7 @@ def get_students(instructor_id, project_id):
     students = [datastore.find_user(user_id=student.student_id) for student in students]
     students = [{'id': student.user_id, 'email': student.email, 'name': student.username} for student in students]
     # Get progress of each student
-    total_milestones = Milestone.query.filter_by(project_id=project_id).count()
+    total_milestones = Milestone.query.filter_by(project_id=project_id).filter(Milestone.weightage>0).count()
     for student in students:
         student['progress'] = MilestoneSubmission.query.filter_by(student_id=student['id']).count() / total_milestones * 100
     return jsonify({'message': 'Students fetched successfully', 'students': students, 'total_milestones': total_milestones}), 200
