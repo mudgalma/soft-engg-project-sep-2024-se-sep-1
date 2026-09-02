@@ -61,4 +61,4 @@ def hello_world():
 if __name__ == '__main__':
     print("Running app")
     print(app.url_map)
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
