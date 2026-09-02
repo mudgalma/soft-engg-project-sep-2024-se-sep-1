@@ -9,15 +9,18 @@ const chart4Data = ref(null);
 
 const fetchData = async () => {
   try {
-    const response = await fetch('http://127.0.0.1:5000/admin/dashboard/statistics', {
-      headers: {
-        
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await fetch(
+      'http://127.0.0.1:5000/admin/dashboard/statistics',
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
 
     if (response.ok) {
       const data = await response.json();
+
       chart1Data.value = data.chart1;
       chart2Data.value = data.chart2;
       chart3Data.value = data.chart3;
@@ -25,7 +28,10 @@ const fetchData = async () => {
 
       renderCharts();
     } else {
-      console.error('Failed to fetch chart data.', await response.text());
+      console.error(
+        'Failed to fetch chart data.',
+        await response.text()
+      );
     }
   } catch (error) {
     console.error('Error fetching chart data:', error);
@@ -39,8 +45,14 @@ const renderCharts = () => {
   renderChart('chart4Canvas', chart4Data.value, 'pie', 'Chart 4');
 };
 
-const renderChart = (id: string, data: any, type: string, title: string) => {
+const renderChart = (
+  id: string,
+  data: any,
+  type: 'bar' | 'line' | 'doughnut' | 'pie',
+  title: string
+) => {
   const ctx = document.getElementById(id) as HTMLCanvasElement;
+
   if (!ctx || !data) return;
 
   new Chart(ctx, {
@@ -51,7 +63,12 @@ const renderChart = (id: string, data: any, type: string, title: string) => {
         {
           label: title,
           data: data.values,
-          backgroundColor: ['#4caf50', '#f44336', '#2196f3', '#ffeb3b'],
+          backgroundColor: [
+            '#4caf50',
+            '#f44336',
+            '#2196f3',
+            '#ffeb3b',
+          ],
           borderColor: ['#333333'],
           borderWidth: 1,
         },
@@ -84,6 +101,7 @@ onMounted(() => {
           </div>
         </div>
       </div>
+
       <div class="col-md-6">
         <div class="card">
           <div class="card-body text-center">
@@ -102,6 +120,7 @@ onMounted(() => {
           </div>
         </div>
       </div>
+
       <div class="col-md-6">
         <div class="card">
           <div class="card-body text-center">
