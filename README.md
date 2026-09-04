@@ -120,10 +120,16 @@ Install dependencies and run:
 
 ```bash
 pip install -r requirements.txt
-python app.py
+python -m flask --app app run --host=0.0.0.0 --port=5000
 ```
 
-> Replace `app.py` with your actual backend entry file if different.
+Set environment variables before starting backend:
+
+```bash
+export HF_TOKEN=your_huggingface_token
+# optional alternative name used by some deployments:
+# export HUGGINGFACEHUB_API_TOKEN=your_huggingface_token
+```
 
 ---
 
@@ -140,6 +146,15 @@ If tests are configured:
 
 Frontend is deployed on Vercel:  
 https://soft-engg-project-sep-2024-se-sep-1-1sylj1nzp-trackie.vercel.app/
+
+For backend deployment on Render (Web Service), use a gunicorn start command that binds to Render's `$PORT`:
+
+```bash
+gunicorn --chdir backend --bind 0.0.0.0:$PORT app:app
+```
+
+Required backend environment variables for LLM endpoints:
+- `HF_TOKEN` or `HUGGINGFACEHUB_API_TOKEN` (either one is accepted)
 
 ---
 

@@ -5,7 +5,7 @@ from datetime import datetime
 from components.models import Milestone, db, Project, ChatHistory, ProjectInstructorAssignment
 from langchain_huggingface import HuggingFaceEndpoint
 from PyPDF2 import PdfReader
-from langchain.embeddings import SentenceTransformerEmbeddings
+from langchain_community.embeddings import SentenceTransformerEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
@@ -24,14 +24,18 @@ ALLOWED_EXTENSIONS = {'pdf'}
 
 load_dotenv("./.env")  # Load .env file
 
-HF_TOKEN = os.getenv("HF_TOKEN")
-print(HUGGINGFACEHUB_API_TOKEN, HF_TOKEN)
-
 repo_id = "mistralai/Mistral-7B-Instruct-v0.2"
 UPLOAD_FOLDER = "./uploads"  # Folder to store uploaded PDFs
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)  # Create folder if it doesn't exist
 
 file_path = ''
+
+
+def get_llm_api_token():
+    token = os.getenv("HUGGINGFACEHUB_API_TOKEN") or os.getenv("HF_TOKEN")
+    if not token:
+        raise ValueError("Missing Hugging Face API token. Set HUGGINGFACEHUB_API_TOKEN or HF_TOKEN.")
+    return token
 
 # @llm_bp.route('/upload', methods=['POST'])
 # def load_pdf(file_path):
@@ -117,14 +121,13 @@ def embeddings(documents):
 # The chain for the question and answer
 
 def create_llm_chain(vectorstore):
-    global HUGGINGFACEHUB_API_TOKEN
     template = """Given the following user question answer the question. 
     Context: {context}
     Question: {question}
     """
     prompt = PromptTemplate(template=template, input_variables=["context", "question"])
 
-    llm = HuggingFaceEndpoint(repo_id=repo_id, max_length=800,  api_key=HUGGINGFACEHUB_API_TOKEN)
+    llm = HuggingFaceEndpoint(repo_id=repo_id, max_length=800,  api_key=get_llm_api_token())
     llm.client.headers = {"Authorization": f"Bearer {HUGGINGFACEHUB_API_TOKEN}"}
     
     memory = ConversationBufferMemory(memory_key='chat_history', return_messages=True)
@@ -198,7 +201,6 @@ def ask_question(instructor_id,project_id):
 # The chain for generating the milestones
 
 def generate_milestone(vectorstore):
-    global HUGGINGFACEHUB_API_TOKEN
     template = """ 
     You are helping the instructor generate tasks (milestones) to guide the students and maintain a check on their project progress. 
 
@@ -228,7 +230,7 @@ def generate_milestone(vectorstore):
     """
     prompt = PromptTemplate(template=template, input_variables=["context", "question"])
 
-    llm = HuggingFaceEndpoint(repo_id=repo_id, api_key=HUGGINGFACEHUB_API_TOKEN)
+    llm = HuggingFaceEndpoint(repo_id=repo_id, api_key=get_llm_api_token())
     llm.client.headers = {"Authorization": f"Bearer {HUGGINGFACEHUB_API_TOKEN}"}
     
     memory = ConversationBufferMemory(memory_key='chat_history', return_messages=True)
