@@ -52,3 +52,31 @@ export default {
           alert(result.error);
           return;
       }
+      // Remove the project from the list
+      for (let i = 0; i < this.projects.length; i++){
+          if (this.projects[i].project_id == this.project_id){
+              this.projects.splice(i, 1);
+          }
+      }
+      // If the project is the only one, reset the display
+      if(this.projects.length == 0){
+          this.changePanel(null);
+      }
+      // If the project is currently being displayed, update the display
+      if(this.last_clicked == this.project_id){
+          this.changeStuff(this.projects[0].project_id);
+      }
+    },
+    // Fetch data from APIs
+    async fetchChartData(){
+    try {
+        // Fetch project data
+        const projectResponse = await fetch(`${import.meta.env.VITE_API_URL}/projects/statistics-1/` + this.project_id,{
+        headers: {
+            'Authentication-Token': `${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json',
+        },
+        });
+        if (projectResponse.ok) {
+        const projectData = await projectResponse.json();
+        this.total_milestones = projectData.total_milestones;
