@@ -1,5 +1,4 @@
 <template>
-
       <!-- Main content -->
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
         <div class="pt-3 pb-2 mb-3 border-bottom" style="padding: 0;">
@@ -32,7 +31,7 @@ export default {
   methods: {
     async fetchStudents() {
       this.student_loading = true;
-      const response = await fetch('http://localhost:5000/students/' + localStorage.getItem('user_id') + '/' + this.project_id, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/students/` + localStorage.getItem('user_id') + '/' + this.project_id, {
         headers: {
           'Content-Type': 'application/json',
           'Authentication-Token': localStorage.getItem('token'),
