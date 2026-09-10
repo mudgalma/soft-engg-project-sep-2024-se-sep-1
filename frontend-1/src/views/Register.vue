@@ -9,7 +9,7 @@ const username = ref('')
 
 const handleRegister = async () => {
     // Call the register API
-    let response = await fetch('http://localhost:5000/register_instructor', {
+    let response = await fetch(`${import.meta.env.VITE_API_URL}/register_instructor`, {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
@@ -35,45 +35,3 @@ const handleRegister = async () => {
 </script>
 
 <template>
-  <div class="min-vh-100 d-flex align-items-center justify-content-center bg-light">
-    <div class="background-image"></div>
-    <div class="card shadow-sm login-container" style="width: 400px">
-      <div class="card-body p-4">
-        <h2 class="text-center mb-4">Register</h2>
-        <form @submit.prevent="handleRegister">
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input
-                type="text"
-                class="form-control"
-                id="username"
-                v-model="username"
-                required
-                >
-            </div>
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input
-              type="text"
-              class="form-control"
-              id="email"
-              v-model="email"
-              required
-            >
-          </div>
-          <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input
-              type="password"
-              class="form-control"
-              id="password"
-              v-model="password"
-              required
-            >
-          </div>
-          <button type="submit" class="btn btn-primary w-100">Register</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</template>

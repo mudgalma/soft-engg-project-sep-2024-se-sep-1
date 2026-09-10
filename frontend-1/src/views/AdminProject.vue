@@ -53,7 +53,7 @@
                 // Fetch projects from backend
                 this.projects = [];
                 this.project_loading = true;
-                const response = await fetch('http://localhost:5000/projects', {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/projects`, {
                     method: 'GET',
                     headers: {
                       'Content-Type': 'application/json',
