@@ -8,7 +8,7 @@ const password = ref('')
 
 const handleLogin = async () => {
   // Call the login API
-  let response = await fetch('http://localhost:5000/login_user', {
+  let response = await fetch(`${import.meta.env.VITE_API_URL}/login_user`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
