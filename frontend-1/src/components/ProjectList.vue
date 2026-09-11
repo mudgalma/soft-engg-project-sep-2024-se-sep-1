@@ -181,7 +181,7 @@ export default {
         event.preventDefault();
         // Get all details from form, title, description, and instructors
         let form = document.getElementById("add_project");
-        const response = await fetch('http://localhost:5000/projects', {
+        const response = await fetch(import.meta.env.VITE_API_URL + '/projects', {
            method: 'POST',
            headers: {
                'Content-Type': 'application/json',
@@ -210,7 +210,7 @@ export default {
     async editProject(event){
         event.preventDefault();
         let form = document.getElementById("edit_project");
-        const response = await fetch('http://localhost:5000/projects/' + this.project_id, {
+        const response = await fetch(import.meta.env.VITE_API_URL + '/projects/' + this.project_id, {
            method: 'PUT',
            headers: {
                'Content-Type': 'application/json',
@@ -250,7 +250,7 @@ export default {
     },
     async deleteProject(event){
         event.preventDefault();
-        const response = await fetch('http://localhost:5000/projects/' + this.project_id, {
+        const response = await fetch(import.meta.env.VITE_API_URL + '/projects/' + this.project_id, {
            method: 'DELETE',
            headers: {
                'Content-Type': 'application/json',
@@ -281,7 +281,7 @@ export default {
     async fetchChartData(){
     try {
         // Fetch project data
-        const projectResponse = await fetch(`http://localhost:5000/projects/statistics-1/` + this.project_id,{
+        const projectResponse = await fetch(import.meta.env.VITE_API_URL + '/projects/statistics-1/' + this.project_id,{
         headers: {
             'Authentication-Token': `${localStorage.getItem('token')}`,
             'Content-Type': 'application/json',
