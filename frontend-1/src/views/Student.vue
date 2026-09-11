@@ -4,8 +4,8 @@ export default {
         return {
             student_id: localStorage.getItem('user_id'),
             project_id: 1,
-            projects: ref([]),
-            milestones: ref([]),
+            projects: [],
+            milestones: [],
             current_project: '',
             type: this.$route.params.type,
             id: this.$route.params.id,
@@ -35,7 +35,7 @@ export default {
                 alert(result.error);
                 return;
             }
-            this.projects.value = result.projects;
-            this.current_project = this.projects.value[0].title;
+            this.projects = result.projects;
+            this.current_project = this.projects[0].title;
             this.loading = false;
         },
