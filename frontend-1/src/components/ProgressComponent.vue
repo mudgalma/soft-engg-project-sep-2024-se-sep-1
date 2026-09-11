@@ -94,7 +94,7 @@ export default {
                 this.error = "Student ID not provided.";
                 return;
             }
-            const response = await fetch('http://localhost:5000/student/milestones/' + this.student_id + '/' + this.project_id, {
+            const response = await fetch(import.meta.env.VITE_API_URL + '/student/milestones/' + this.student_id + '/' + this.project_id, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -122,7 +122,7 @@ export default {
             try {
                 // Adjusted API call to pass `studentId` dynamically
                 const response = await fetch(
-                    `http://127.0.0.1:5000/commit_history/` + this.student_id + '/' + this.project_id,
+                    import.meta.env.VITE_API_URL + '/commit_history/' + this.student_id + '/' + this.project_id,
                     {
                         headers: {
                         "Content-Type": "application/json",
@@ -155,7 +155,7 @@ export default {
             }
         },
         async uploadURL() {
-            const response = await fetch('http://localhost:5000/commit_history/' + this.student_id + '/' + this.project_id, {
+            const response = await fetch(import.meta.env.VITE_API_URL + '/commit_history/' + this.student_id + '/' + this.project_id, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
